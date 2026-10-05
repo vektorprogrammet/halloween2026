@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-      <ImageDisplay image='none'></ImageDisplay>
+      <ImageDisplay image='shrek.webp'></ImageDisplay>
     </>
   )
 }
