@@ -1,18 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const tiles = Array.from({ length: 6 }, (_, index) => index);
 
-export default function StartPage() {
-  const [revealedTiles, setRevealedTiles] = useState<number[]>([]);
+
+type HalloweenGameProps = {
+  onStart?: () => void;
+  onReveal?: (tile: number) => void;
+};
+
+export default function StartPage({onStart, onReveal}: HalloweenGameProps) {
+  const [activeTile, setActiveTile] = useState<number | null>(null);
+
+  useEffect(() => {
+    let tile = 0;
+    let revealed = false;
+
+    const interval = setInterval(() => {
+      if (!revealed) {
+        // Reveal the current tile
+        setActiveTile(tile);
+        onReveal?.(tile);
+        revealed = true;
+      } else {
+        // Hide it again, then move to the next tile
+        setActiveTile(null);
+        tile = (tile + 1) % tiles.length;
+        revealed = false;
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [onReveal]);
 
   const startGame = () => {
-    setRevealedTiles([]);
-  };
-
-  const revealTile = (tile: number) => {
-    setRevealedTiles((current) =>
-      current.includes(tile) ? current : [...current, tile],
-    );
+    setActiveTile(null);
+    onStart?.();
   };
 
   return (
@@ -66,19 +88,16 @@ export default function StartPage() {
               />
               <div className="absolute inset-0 grid grid-cols-2 grid-rows-3 gap-[3px]">
                 {tiles.map((tile) => {
-                  const isRevealed = revealedTiles.includes(tile);
+                  const isRevealed = activeTile === tile;
 
                   return (
-                    <button
-                      aria-label={`Reveal tile ${tile + 1}`}
-                      className={`reveal-tile cursor-pointer transition-[opacity,transform] duration-500 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-[#ff7841] ${
+                    <div
+                      className={` scale-[1.03] bg-black reveal-tile cursor-pointer transition-[opacity,transform] duration-1000 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-[#ff7841] ${
                         isRevealed
-                          ? "pointer-events-none scale-[0.96] opacity-0"
-                          : "opacity-100 hover:brightness-110"
+                          ? "opacity-0"
+                          : "opacity-100"
                       }`}
                       key={tile}
-                      onClick={() => revealTile(tile)}
-                      type="button"
                     />
                   );
                 })}
