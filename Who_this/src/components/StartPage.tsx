@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const tiles = Array.from({ length: 6 }, (_, index) => index);
 
-export default function start() {
+export default function StartPage() {
   const [revealedTiles, setRevealedTiles] = useState<number[]>([]);
 
   const startGame = () => {

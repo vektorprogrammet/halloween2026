@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { ImageDisplay } from './components/ImageDisplay'
 import './App.css'
+import StartPage from './components/StartPage'
 
 function App() {
 
   return (
 
     <>
-      <ImageDisplay image='shrek.webp'></ImageDisplay> 
+      <StartPage></StartPage>
     </>
   )
 }
