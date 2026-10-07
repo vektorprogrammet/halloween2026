@@ -5,8 +5,9 @@ import './App.css'
 function App() {
 
   return (
+
     <>
-      <ImageDisplay image='shrek.webp'></ImageDisplay>
+      <ImageDisplay image='shrek.webp'></ImageDisplay> 
     </>
   )
 }
