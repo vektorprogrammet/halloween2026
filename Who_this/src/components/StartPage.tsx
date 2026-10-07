@@ -32,8 +32,8 @@ export default function StartPage() {
                 style={{ fontVariationSettings: '"opsz" 14' }}
               >
                 Picture of a character hides behind
-                <br className="hidden sm:block" /> a grid. First one to reveal
-                get a point
+                <br className="hidden sm:block" /> a grid. First one to guess
+                gets a point
               </p>
               <p
                 className="font-dm-extrabold mt-1 text-[clamp(30px,3.35vw,48px)] leading-normal text-[#a9c844]"
@@ -62,7 +62,7 @@ export default function StartPage() {
               <img
                 alt="A mysterious vampire character"
                 className="absolute inset-0 block h-full w-full"
-                src="/assets/2e9a0.svg"
+                src="src/assets/2e9a0.svg"
               />
               <div className="absolute inset-0 grid grid-cols-2 grid-rows-3 gap-[3px]">
                 {tiles.map((tile) => {
