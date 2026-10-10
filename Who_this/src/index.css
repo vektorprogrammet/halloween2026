@@ -1,1 +1,43 @@
 @import "tailwindcss";
+.font-creepster {
+  font-family: "Creepster:Regular", fantasy;
+}
+
+.font-dm-regular {
+  font-family: "DM Sans:Regular", sans-serif;
+}
+
+.font-dm-extrabold {
+  font-family: "DM Sans:ExtraBold", sans-serif;
+}
+
+.font-dm-black {
+  font-family: "DM Sans:Black", sans-serif;
+}
+@font-face {
+  font-family: "Creepster:Regular";
+  src: url("https://static.figma.com/font/Creepster-Regular_1") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "DM Sans:Black";
+  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "DM Sans:ExtraBold";
+  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "DM Sans:Regular";
+  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+}
