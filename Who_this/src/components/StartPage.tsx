@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const tiles = Array.from({ length: 6 }, (_, index) => index);
 
@@ -10,6 +11,7 @@ type HalloweenGameProps = {
 
 export default function StartPage({onStart, onReveal}: HalloweenGameProps) {
   const [activeTile, setActiveTile] = useState<number | null>(null);
+  const nav = useNavigate();
 
   useEffect(() => {
     let tile = 0;
@@ -68,7 +70,7 @@ export default function StartPage({onStart, onReveal}: HalloweenGameProps) {
               </p>
               <button
               className="font-dm-black w-full cursor-pointer rounded-[9px] bg-[#ff7841] px-8 py-[23px] text-center text-[24px] leading-[15px] tracking-[1.3px] text-[#180d17] transition hover:bg-[#ff8959] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f8f0df] active:translate-y-px"
-              onClick={startGame}
+              onClick={() => nav("/Game")}
               style={{ fontVariationSettings: '"opsz" 14' }}
               type="button"
             >

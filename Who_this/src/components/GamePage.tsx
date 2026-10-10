@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom"
+
 const assetPathPrefix = "/assets"
 
 const characterLayers = [
@@ -40,6 +42,7 @@ function CharacterArtwork() {
 }
 
 export default function GamePage() {
+  const nav = useNavigate();
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
       <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
@@ -95,12 +98,23 @@ export default function GamePage() {
             </div>
           </div>
           <div className="pt-[25px]">
+            <div className="flex flow-row justify-between items-center mb-5">
             <button
-              className="label mb-5 font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#FFFFFF] px-5 text-[#180d17] transition hover:bg-[#aaaaaa] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#FFFFFF] px-5 text-[#180d17] transition hover:bg-[#aaaaaa] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               type="button"
+              onClick={() => nav("/End")}
             >
               Finish Game
             </button>
+            <button
+              className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#000000] px-5 text-[#FFFFFF] transition hover:bg-[#101010] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              type="button"
+              onClick={() => nav("/Start")}
+
+            >
+              New game
+            </button>
+            </div>
             <div className="border-t border-white/5 pt-[18px] mb-5">
               <p className="body-copy font-dm-regular">Round 1 of *X*</p>
             </div>
