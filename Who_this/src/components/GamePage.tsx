@@ -41,7 +41,7 @@ function CharacterArtwork() {
 
 export default function GamePage() {
   return (
-    <main className="min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
+    <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
       <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
         <section className="overflow-hidden rounded-[20px] border border-[#3a2940] bg-[#17101f] shadow-[0_28px_80px_rgba(7,4,12,0.53)]">
           <header className="flex h-[41px] items-center justify-between px-[17px]">
@@ -95,9 +95,21 @@ export default function GamePage() {
             </div>
           </div>
           <div className="pt-[25px]">
-            <div className="border-t border-white/5 pt-[18px]">
+            <button
+              className="label mb-5 font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#ff8a5b] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              type="button"
+            >
+              Finish Game
+            </button>
+            <div className="border-t border-white/5 pt-[18px] mb-5">
               <p className="body-copy font-dm-regular">Round 1 of *X*</p>
             </div>
+            <button
+              className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#ff8a5b] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              type="button"
+            >
+              Next Round
+            </button>
           </div>
         </aside>
       </div>
