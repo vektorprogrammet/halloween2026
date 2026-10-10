@@ -38,41 +38,44 @@ export default function StartPage({onStart, onReveal}: HalloweenGameProps) {
   };
 
   return (
-    <main className="min-h-dvh bg-black p-[clamp(16px,2.2vw,34px)] text-[#f8f0df]">
-      <div className="mx-auto flex min-h-[calc(100dvh-clamp(32px,4.4vw,68px))] max-w-[1440px] items-center rounded-[9px] border-2 border-[#9e8181] px-[clamp(24px,2.5vw,66px)] py-[clamp(40px,6vw,86px)]">
+    <main className="bg-linear-300/oklab from-[#000000] via-[#331C23] to-[#512C38] min-h-dvh bg-black p-[clamp(16px,2.2vw,34px)] text-[#f8f0df]">
+      <div className="mx-auto flex min-h-[calc(100dvh-clamp(32px,4.4vw,68px))] max-w-[1440px] items-center rounded-[9px] px-[clamp(24px,2.5vw,66px)] py-[clamp(40px,6vw,86px)]">
         <div className="grid w-full items-center gap-[clamp(40px,4vw,72px)] lg:grid-cols-[minmax(0,1.08fr)_minmax(440px,1fr)]">
           <section className="flex min-w-0 flex-col">
-            <h1 className="font-creepster text-[clamp(68px,8.25vw,120px)] leading-[0.72] tracking-[0.083em]">
+            <h1 className="font-creepster text-[clamp(88px,9.55vw,200px)] leading-[0.72] tracking-[0.083em]">
               <span>Who </span>
               <span className="text-[#ff7841]">THis</span>
-              <span>?</span>
+              <span>?</span>  
             </h1>
 
             <div className="mt-[clamp(24px,3vw,38px)]">
               <p
-                className="font-dm-regular text-[clamp(20px,2.2vw,32px)] leading-normal text-[#a698a8]"
+                className="font-dm-regular text-[clamp(16px,1.8vw,32px)] leading-normal text-[#a698a8]"
                 style={{ fontVariationSettings: '"opsz" 14' }}
               >
                 Picture of a character hides behind
                 <br className="hidden sm:block" /> a grid. First one to guess
                 gets a point
               </p>
+
+            </div>
+            <div className="mt-[clamp(24px,3vm,3px)]">
               <p
-                className="font-dm-extrabold mt-1 text-[clamp(30px,3.35vw,48px)] leading-normal text-[#a9c844]"
+                className="font-dm-extrabold mt-1 text-[clamp(30px,4.35vw,68px)] leading-normal text-[#a9c844]"
                 style={{ fontVariationSettings: '"opsz" 14' }}
               >
                 Halloween Edition
               </p>
-            </div>
-
-            <button
-              className="font-dm-black mt-[clamp(52px,9vw,126px)] w-full cursor-pointer rounded-[9px] bg-[#ff7841] px-8 py-[23px] text-center text-[24px] leading-[15px] tracking-[1.3px] text-[#180d17] transition hover:bg-[#ff8959] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f8f0df] active:translate-y-px"
+              <button
+              className="font-dm-black w-full cursor-pointer rounded-[9px] bg-[#ff7841] px-8 py-[23px] text-center text-[24px] leading-[15px] tracking-[1.3px] text-[#180d17] transition hover:bg-[#ff8959] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f8f0df] active:translate-y-px"
               onClick={startGame}
               style={{ fontVariationSettings: '"opsz" 14' }}
               type="button"
             >
               START
             </button>
+            </div>
+
           </section>
 
           <section
