@@ -12,7 +12,7 @@ export interface Builder {
 }
 
 export class CharacterBuilder {
-  private character: Character;
+  public character: Character;
 
   constructor() {
     this.reset();
