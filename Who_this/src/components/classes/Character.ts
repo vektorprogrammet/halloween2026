@@ -15,5 +15,10 @@ export class Character {
     this.ImageSource = "";
     this.revealed = false;
   }
+
+  public GetName(): string {return this.Name}
+  public GetMovieName(): string {return this.MovieName}
+  public GetImageSource(): string {return this.ImageSource}
+  public GetRevealed(): boolean {return this.revealed}  
 }
 
