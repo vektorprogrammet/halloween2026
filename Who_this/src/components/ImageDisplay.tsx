@@ -2,17 +2,21 @@ import { ImageGrid } from "./ImageGrid"
 
 type ImageProps = {
     image: string
+    gridCount: number
+    revealedTiles: Set<number>
 }
 
 export const ImageDisplay = (props: ImageProps) => {
 
     return (
         <>
-            <div className="relative w-150 h-150 bg-orange-100">
-                <ImageGrid gridCount={6}></ImageGrid>
-                <div className="size-full">
-                    <img src={props.image} alt="" />
-                </div>
+            <div className="relative aspect-[752.8/423.45] min-h-[210px] overflow-hidden bg-[#27122f]">
+                <img
+                    src={props.image}
+                    alt=""
+                    className="absolute inset-0 block size-full object-contain"
+                />
+                <ImageGrid gridCount={props.gridCount} revealedTiles={props.revealedTiles}></ImageGrid>
             </div>
         </>
     )
