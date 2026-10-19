@@ -4,5 +4,30 @@
     "movieName": "Shrek",
     "imageSource": "public/shrek.webp",
     "revealed": false
+  },
+  {
+    "name": "Ghostface",
+    "movieName": "Scream",
+    "imageSource": "Who_this/public/Ghostface.jpg",
+    "revealed": false
+  },
+  {
+    "name": "JasonVoorhees",
+    "movieName": "Friday the 13th",
+    "imageSource": "Who_this/public/JasonVoorhees.jpg",
+    "revealed": false
+  },
+  {
+    "name": "Pennywise",
+    "movieName": "IT",
+    "imageSource": "Who_this/public/JasonVoorhees.jpg",
+    "revealed": false
+  },
+  {
+    "name": "Harley Quinn",
+    "movieName": "Suicide Squad / DC",
+    "imageSource": "Who_this/public/HarleyQuinn.jpg",
+    "revealed": false
   }
+
 ]
