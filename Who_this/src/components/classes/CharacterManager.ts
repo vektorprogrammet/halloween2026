@@ -10,6 +10,7 @@ export class CharacterManager {
     this.characters = data.map(
       (character: CharacterData) => {
         Builder.reset();
+        Builder.SetId(character.id);
         Builder.SetImageSource(character.imageSource)
         Builder.SetMovieName(character.movieName)
         Builder.SetName(character.name)

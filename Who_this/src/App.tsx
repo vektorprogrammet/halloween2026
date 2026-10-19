@@ -12,10 +12,8 @@ import { Character } from "./components/classes/Character";
 function App() {
   const manager = new CharacterManager(CharacterJSON);
   manager.getAllCharacters().forEach((character) => {
-    console.log(character.GetName() + ", From Movie: " + character.GetMovieName())
+    console.log(character.GetId() + ": " + character.GetName() + ", From Movie: " + character.GetMovieName())
   })
-
-
 
   return (
     <BrowserRouter>

@@ -21,13 +21,14 @@ export class CharacterBuilder {
   public reset(): void {
     this.character = new Character();
   }
-
+  public SetId(Id: number): void {this.character.SetId(Id)}
   public SetMovieName(MovieName: string): void {this.character.SetMovieName(MovieName)}
   public SetName(name: string): void {this.character.SetName(name)}
   public SetImageSource(ImageSource: string): void {this.character.SetImageSource(ImageSource)}
   public SetRevealed(Revealed: boolean): void {this.character.SetRevealed(Revealed)}
 
   public FromJSON(data: CharacterData): void{
+    this.SetId(data.id);
     this.SetName(data.name);
     this.SetMovieName(data.movieName);
     this.SetImageSource(data.imageSource);
