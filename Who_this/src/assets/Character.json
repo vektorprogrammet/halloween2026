@@ -2,7 +2,7 @@
   {
     "name": "Shrek",
     "movieName": "Shrek",
-    "imageSource": "shrek.webp",
+    "imageSource": "/shrek.webp",
     "revealed": false
   }
 ]

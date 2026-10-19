@@ -2,18 +2,16 @@ import { ImageGrid } from "./ImageGrid"
 
 type ImageProps = {
     image: string
+    gridCols: number
+    gridRows: number
+    revealed: boolean[]
 }
 
-export const ImageDisplay = (props: ImageProps) => {
-
+export const ImageDisplay = ({image, gridCols, gridRows, revealed}: ImageProps) => {
     return (
-        <>
-            <div className="relative w-150 h-150 bg-orange-100">
-                <ImageGrid gridCount={6}></ImageGrid>
-                <div className="size-full">
-                    <img src={props.image} alt="" />
-                </div>
-            </div>
-        </>
+        <div className="absolute inset-0">
+            <img src={image} className="absolute inset-0 h-full w-full object-cover" alt="" />
+            <ImageGrid gridCols={gridCols} gridRows={gridRows} revealed={revealed}/>
+        </div>
     )
 }
