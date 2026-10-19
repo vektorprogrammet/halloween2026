@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom"
+import CharacterJSON from '../assets/Character.json'
+import { CharacterManager } from "../components/classes/CharacterManager";
+import { useMemo } from "react";
 
 const assetPathPrefix = "/assets"
 
@@ -22,24 +25,32 @@ const characterLayers = [
   { file: "bebb6.svg", className: "inset-[11.97%_30.87%_77.08%_30.44%]" },
 ]
 
-const tileColors = ["#713246", "#77354a", "#6d3045", "#743148", "#683044"]
-const tileCount = 20
+const manager = useMemo(()=> new CharacterManager(CharacterJSON), []);
+manager.getAllCharacters().forEach((character) => {
+  console.log(character.GetName() + ", From Movie: " + character.GetMovieName())
+})
 
-function CharacterArtwork() {
-  return (
-    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-      {characterLayers.map((layer) => (
-        <div className={`absolute ${layer.className}`} key={layer.file}>
-          <img
-            alt=""
-            className={`block h-full w-full max-w-none ${layer.imageClassName ?? ""}`}
-            src={`${assetPathPrefix}/${layer.file}`}
-          />
-        </div>
-      ))}
-    </div>
-  )
-}
+const tileColors = ["#713246", "#77354a", "#6d3045", "#743148", "#683044"]
+const ROWS = 4
+const COLS = 5
+
+
+
+// function CharacterArtwork() {
+//   return (
+//     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+//       {characterLayers.map((layer) => (
+//         <div className={`absolute ${layer.className}`} key={layer.file}>
+//           <img
+//             alt=""
+//             className={`block h-full w-full max-w-none ${layer.imageClassName ?? ""}`}
+//             src={`${assetPathPrefix}/${layer.file}`}
+//           />
+//         </div>
+//       ))}
+//     </div>
+//   )
+// }
 
 export default function GamePage() {
   const nav = useNavigate();
@@ -53,7 +64,7 @@ export default function GamePage() {
           </header>
 
           <div className="relative aspect-[752.8/423.45] min-h-[210px] overflow-hidden bg-[#27122f]">
-            <CharacterArtwork />
+            {/* <CharacterArtwork /> */}
             <div className="absolute inset-0 grid grid-cols-5 grid-rows-4 gap-[3px] bg-[#100a18]">
               {Array.from({ length: tileCount }, (_, index) => (
                 <div
