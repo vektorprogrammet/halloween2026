@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { CharacterManager } from "./classes/CharacterManager";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import CharacterJSON from '../assets/Character.json';
 import { Character } from "./classes/Character";
@@ -30,11 +30,6 @@ const characterLayers = [
 const tileColors = ["#713246", "#77354a", "#6d3045", "#743148", "#683044"]
 const tileCount = 20
 
-const manager = new CharacterManager(CharacterJSON);
-manager.GetAllCharacters().forEach((character) => {
-  console.log(character.GetId() + ": " + character.GetName() + ", From Movie: " + character.GetMovieName())
-})
-
 function CharacterArtwork() {
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -60,9 +55,17 @@ export default function GamePage() {
   }
 
   const manager = ManagerRef.current;
-  const [character, setCharacter] = useState<Character | null>(null);
+
+  const [character, setCharacter] = useState<Character | null>(null); // Also current round get incremented, so after this current round is 1
+  const [CurrentRound, SetRound] = useState(manager.GetCurrentRound())
+  const [Revealed, SetRevealed] = useState(false);
+
+
 
  function nextRound() {
+  if (manager.GetCurrentRound() >= manager.GetMaxRound()){
+    return;
+  }
     const nextCharacter = manager.GetCharacterRandom();
 
     if (nextCharacter === null) {
@@ -70,7 +73,24 @@ export default function GamePage() {
         return;
     }
     setCharacter(nextCharacter);
+    SetRound(manager.GetCurrentRound());
+    SetRevealed(false);
   }
+
+  function reveal(){
+    SetRevealed(true);
+  }
+
+  useEffect(() => {
+    // StrictMode workaround (This gets run twice in strictMode):
+    if (manager.GetCurrentRound() !== 0) {
+        return;
+    }
+    const firstCharacter = manager.GetCharacterRandom();
+
+    setCharacter(firstCharacter);
+    SetRound(manager.GetCurrentRound());
+  }, [manager])
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
       <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
@@ -105,6 +125,7 @@ export default function GamePage() {
             <button
               className="label min-h-[46px] rounded-[9px] border border-[#49364e] bg-[#211628] px-5 text-[#d9ccda] transition hover:border-[#705678] hover:bg-[#2a1d32] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2"
               type="button"
+              onClick={reveal}
             >
               REVEAL ANSWER
             </button>
@@ -119,10 +140,12 @@ export default function GamePage() {
               </h1>
             </div>
             <div className="flex flex-col gap-8 pt-[14px]">
-              <p className="font-creepster text-[48px] leading-[27px] tracking-[1.08px]">
-                _________
+              <p className="font-creepster text-[32px] leading-[27px] tracking-[1.08px]">
+                {Revealed ? character?.GetName() : "_____________"}
               </p>
-              <p className="body-copy font-dm-regular">From ____</p>
+              <p className="body-copy text-[20px] font-dm-regular">
+                From {Revealed ? character?.GetMovieName() : "______"}
+              </p>
             </div>
           </div>
           <div className="pt-[25px]">
@@ -144,8 +167,9 @@ export default function GamePage() {
             </button>
             </div>
             <div className="border-t border-white/5 pt-[18px] mb-5">
-              <p className="body-copy font-dm-regular">Round 1 of *X*</p>
+              <p className="body-copy font-dm-regular">Round {CurrentRound} of {manager.GetMaxRound()}</p>
             </div>
+            
             <button
               className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#6F8E0F] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               type="button"
