@@ -21,10 +21,17 @@ export class CharacterManager {
         return Builder.GetCharacter();
       }
     );
-    this.StaticCharacters = structuredClone(this.characters);
-    this.CurrentRound = 1;
+    this.StaticCharacters = [...this.characters];
+    this.CurrentRound = 0;
   }
 
+  GetCurrentRound(): number {
+    return this.CurrentRound;
+  }
+
+  GetMaxRound(): number {
+    return this.MaxRounds;
+  }
   GetAllCharacters(): Character[] {
     return [...this.characters];
   }
@@ -34,13 +41,14 @@ export class CharacterManager {
         return null;
     }
 
+    this.CurrentRound++;
     const RandomIndex = Math.floor(Math.random() * this.characters.length);
     return this.characters.splice(RandomIndex, 1)[0];
   }
 
   ResetRound(): void {
     this.CurrentRound = 0;
-    this.characters = structuredClone(this.StaticCharacters);
+    this.characters = [...this.StaticCharacters];
   }
 
   AddCharacter(character: Character): void {
