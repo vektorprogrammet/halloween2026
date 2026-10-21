@@ -3,31 +3,31 @@
     "id": 1,
     "name": "Shrek",
     "movieName": "Shrek",
-    "imageSource": "public/shrek.webp",
+    "imageSource": "public/shrek.webp"
   },
   {
     "id": 2,
     "name": "Ghostface",
     "movieName": "Scream",
-    "imageSource": "Who_this/public/Ghostface.jpg",
+    "imageSource": "Who_this/public/Ghostface.jpg"
   },
   {
     "id": 3,
-    "name": "JasonVoorhees",
+    "name": "Jason Voorhees",
     "movieName": "Friday the 13th",
-    "imageSource": "Who_this/public/JasonVoorhees.jpg",
+    "imageSource": "Who_this/public/JasonVoorhees.jpg"
   },
   {
     "id": 4,
     "name": "Pennywise",
     "movieName": "IT",
-    "imageSource": "Who_this/public/JasonVoorhees.jpg",
+    "imageSource": "Who_this/public/JasonVoorhees.jpg"
   },
   {
     "id": 5,
     "name": "Harley Quinn",
     "movieName": "Suicide Squad / DC",
-    "imageSource": "Who_this/public/HarleyQuinn.jpg",
+    "imageSource": "Who_this/public/HarleyQuinn.jpg"
   }
 
 ]
