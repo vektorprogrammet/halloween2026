@@ -1,4 +1,9 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { CharacterManager } from "./classes/CharacterManager";
+import { useRef } from "react";
+import { useState } from "react";
+import CharacterJSON from '../assets/Character.json';
+import { Character } from "./classes/Character";
 
 const assetPathPrefix = "/assets"
 
@@ -25,6 +30,11 @@ const characterLayers = [
 const tileColors = ["#713246", "#77354a", "#6d3045", "#743148", "#683044"]
 const tileCount = 20
 
+const manager = new CharacterManager(CharacterJSON);
+manager.getAllCharacters().forEach((character) => {
+  console.log(character.GetId() + ": " + character.GetName() + ", From Movie: " + character.GetMovieName())
+})
+
 function CharacterArtwork() {
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -43,6 +53,19 @@ function CharacterArtwork() {
 
 export default function GamePage() {
   const nav = useNavigate();
+  const ManagerRef = useRef<CharacterManager | null>(null);
+
+  if (ManagerRef.current === null){
+    ManagerRef.current = new CharacterManager(CharacterJSON);
+  }
+
+  const manager = ManagerRef.current;
+  const [character, setCharacter] = useState<Character | null>(null);
+
+  function nextRound() {
+    const nextCharacter: Character = manager.getCharacterRandom();
+    setCharacter(nextCharacter);
+  }
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
       <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">

@@ -4,6 +4,10 @@ import type { CharacterData } from "./CharacterData";
 
 export class CharacterManager {
   private characters: Character[] = [];
+  private readonly StaticCharacters: Character[] = [];
+  private CurrentRound: number;
+  private MaxRounds: number = 5;
+
 
   constructor(data: CharacterData[]) {
     const Builder: CharacterBuilder = new CharacterBuilder();
@@ -18,22 +22,29 @@ export class CharacterManager {
         return Builder.GetCharacter();
       }
     );
+    this.StaticCharacters = structuredClone(this.characters);
+    this.CurrentRound = 1;
   }
 
-  getAllCharacters(): Character[] {
+  GetAllCharacters(): Character[] {
     return [...this.characters];
   }
 
-  getCharacterRandom(): Character | null{
+  GetCharacterRandom(): Character | null{
     if (this.characters.length === 0){
         return null;
     }
 
     const RandomIndex = Math.floor(Math.random() * this.characters.length);
-    return this.characters[RandomIndex];
+    return this.characters.splice(RandomIndex, 1)[0];
   }
 
-  addCharacter(character: Character): void {
+  ResetRound(): void {
+    this.CurrentRound = 0;
+    this.characters = structuredClone(this.StaticCharacters);
+  }
+
+  AddCharacter(character: Character): void {
     this.characters.push(character);
   }
 }
