@@ -31,7 +31,7 @@ const tileColors = ["#713246", "#77354a", "#6d3045", "#743148", "#683044"]
 const tileCount = 20
 
 const manager = new CharacterManager(CharacterJSON);
-manager.getAllCharacters().forEach((character) => {
+manager.GetAllCharacters().forEach((character) => {
   console.log(character.GetId() + ": " + character.GetName() + ", From Movie: " + character.GetMovieName())
 })
 
@@ -62,8 +62,13 @@ export default function GamePage() {
   const manager = ManagerRef.current;
   const [character, setCharacter] = useState<Character | null>(null);
 
-  function nextRound() {
-    const nextCharacter: Character = manager.getCharacterRandom();
+ function nextRound() {
+    const nextCharacter = manager.GetCharacterRandom();
+
+    if (nextCharacter === null) {
+        console.log("No characters available!");
+        return;
+    }
     setCharacter(nextCharacter);
   }
   return (
@@ -144,6 +149,7 @@ export default function GamePage() {
             <button
               className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#6F8E0F] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               type="button"
+              onClick={nextRound}
             >
               Next Round
             </button>

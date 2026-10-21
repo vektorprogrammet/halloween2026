@@ -18,7 +18,6 @@ export class CharacterManager {
         Builder.SetImageSource(character.imageSource)
         Builder.SetMovieName(character.movieName)
         Builder.SetName(character.name)
-        Builder.SetRevealed(character.revealed)
         return Builder.GetCharacter();
       }
     );
