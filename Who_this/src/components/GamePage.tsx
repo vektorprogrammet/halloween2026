@@ -2,10 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { CharacterManager } from "./classes/CharacterManager";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import CharacterJSON from '../assets/Character.json';
+import CharacterJSON from "../assets/Character.json";
 import { Character } from "./classes/Character";
-
-const assetPathPrefix = "/assets"
+import StartGameSfx from "../assets/StartGameSfx.mp3";
+import RevealATileSfx from "../assets/RevealATileSfx.mp3";
+import RevealPictureSfx from "../assets/RevealPictureSfx.mp3";
+import { playSound } from "react-sounds";
+const assetPathPrefix = "/assets";
 
 const characterLayers = [
   { file: "9713e.svg", className: "inset-[0_24.04%]" },
@@ -25,10 +28,10 @@ const characterLayers = [
   { file: "6cbc9.svg", className: "inset-[30.62%_40.57%_61.08%_41.26%]" },
   { file: "e455b.svg", className: "inset-[78.77%_46.97%_0.46%_46.97%]" },
   { file: "bebb6.svg", className: "inset-[11.97%_30.87%_77.08%_30.44%]" },
-]
+];
 
-const tileColors = ["#713246", "#77354a", "#6d3045", "#743148", "#683044"]
-const tileCount = 20
+const tileColors = ["#713246", "#77354a", "#6d3045", "#743148", "#683044"];
+const tileCount = 20;
 
 function CharacterArtwork() {
   return (
@@ -43,60 +46,74 @@ function CharacterArtwork() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 export default function GamePage() {
   const nav = useNavigate();
   const ManagerRef = useRef<CharacterManager | null>(null);
 
-  if (ManagerRef.current === null){
+  if (ManagerRef.current === null) {
     ManagerRef.current = new CharacterManager(CharacterJSON);
   }
 
   const manager = ManagerRef.current;
 
   const [character, setCharacter] = useState<Character | null>(null); // Also current round get incremented, so after this current round is 1
-  const [CurrentRound, SetRound] = useState(manager.GetCurrentRound())
+  const [CurrentRound, SetRound] = useState(manager.GetCurrentRound());
   const [Revealed, SetRevealed] = useState(false);
 
-
-
- function nextRound() {
-  if (manager.GetCurrentRound() >= manager.GetMaxRound()){
-    return;
-  }
+  function nextRound() {    
+    console.log(manager.GetAllCharacters());
+    if (manager.GetCurrentRound() >= manager.GetMaxRound()) {
+      return;
+    }
+    playSound(StartGameSfx);
     const nextCharacter = manager.GetCharacterRandom();
 
     if (nextCharacter === null) {
-        console.log("No characters available!");
-        return;
+      console.log("No characters available!");
+      return;
     }
     setCharacter(nextCharacter);
     SetRound(manager.GetCurrentRound());
     SetRevealed(false);
   }
 
-  function reveal(){
+  function reveal() {
+    if (Revealed) {
+      return;
+    }
     SetRevealed(true);
   }
 
   useEffect(() => {
     // StrictMode workaround (This gets run twice in strictMode):
     if (manager.GetCurrentRound() !== 0) {
-        return;
+      return;
     }
     const firstCharacter = manager.GetCharacterRandom();
 
     setCharacter(firstCharacter);
     SetRound(manager.GetCurrentRound());
-  }, [manager])
+  }, [manager]);
+
+  const PlayRevealTileSfx = () => {
+    if (Revealed) return;
+    playSound(RevealATileSfx);
+  };
+  const PlayRevealPictureSfx = () => {
+    if (Revealed) return;
+    playSound(RevealPictureSfx);
+  };
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
       <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
         <section className="overflow-hidden rounded-[20px] border border-[#3a2940] bg-[#17101f] shadow-[0_28px_80px_rgba(7,4,12,0.53)]">
           <header className="flex h-[41px] items-center justify-between px-[17px]">
-            <p className="label text-[#837586] font-dm-regular">MYSTERY CHARACTER</p>
+            <p className="label text-[#837586] font-dm-regular">
+              MYSTERY CHARACTER
+            </p>
             <p className="label text-[#b8d557] font-dm-regular">0% REVEALED</p>
           </header>
 
@@ -119,13 +136,17 @@ export default function GamePage() {
             <button
               className="label flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#ff7841] px-5 text-[#180d17] transition hover:bg-[#ff8a5b] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               type="button"
+              onClick={PlayRevealTileSfx}
             >
               REVEAL ONE PIECE
             </button>
             <button
               className="label min-h-[46px] rounded-[9px] border border-[#49364e] bg-[#211628] px-5 text-[#d9ccda] transition hover:border-[#705678] hover:bg-[#2a1d32] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2"
               type="button"
-              onClick={reveal}
+              onClick={() => {
+                reveal();
+                PlayRevealPictureSfx();
+              }}
             >
               REVEAL ANSWER
             </button>
@@ -150,38 +171,41 @@ export default function GamePage() {
           </div>
           <div className="pt-[25px]">
             <div className="flex flow-row justify-between items-center mb-5">
-            <button
-              className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#FFFFFF] px-5 text-[#180d17] transition hover:bg-[#aaaaaa] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              type="button"
-              onClick={() => nav("/End")}
-            >
-              Finish Game
-            </button>
-            <button
-              className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#000000] px-5 text-[#FFFFFF] transition hover:bg-[#101010] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              type="button"
-              onClick={() => nav("/Start")}
-
-            >
-              New game
-            </button>
+              <button
+                className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#FFFFFF] px-5 text-[#180d17] transition hover:bg-[#aaaaaa] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                type="button"
+                onClick={() => nav("/End")}
+              >
+                Finish Game
+              </button>
+              <button
+                className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#000000] px-5 text-[#FFFFFF] transition hover:bg-[#101010] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                type="button"
+                onClick={() => nav("/Start")}
+              >
+                New game
+              </button>
             </div>
             <div className="border-t border-white/5 pt-[18px] mb-5">
-              <p className="body-copy font-dm-regular">Round {CurrentRound} of {manager.GetMaxRound()}</p>
+              <p className="body-copy font-dm-regular">
+                Round {CurrentRound} of {manager.GetMaxRound()}
+              </p>
             </div>
 
-            {Revealed && (<button
+            {Revealed && (
+              <button
                 className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#6F8E0F] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 type="button"
-                onClick={nextRound}
+                onClick={() => {
+                  nextRound();
+                }}
               >
                 Next Round
               </button>
             )}
- 
           </div>
         </aside>
       </div>
     </main>
-  )
+  );
 }
