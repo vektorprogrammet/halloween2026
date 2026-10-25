@@ -4,35 +4,54 @@ import type { CharacterData } from "./CharacterData";
 
 export class CharacterManager {
   private characters: Character[] = [];
+  private readonly StaticCharacters: Character[] = [];
+  private CurrentRound: number;
+  private MaxRounds: number = 5;
+
 
   constructor(data: CharacterData[]) {
     const Builder: CharacterBuilder = new CharacterBuilder();
     this.characters = data.map(
       (character: CharacterData) => {
         Builder.reset();
+        Builder.SetId(character.id);
         Builder.SetImageSource(character.imageSource)
         Builder.SetMovieName(character.movieName)
         Builder.SetName(character.name)
-        Builder.SetRevealed(character.revealed)
         return Builder.GetCharacter();
       }
     );
+    this.StaticCharacters = [...this.characters];
+    this.CurrentRound = 0;
   }
 
-  getAllCharacters(): Character[] {
+  GetCurrentRound(): number {
+    return this.CurrentRound;
+  }
+
+  GetMaxRound(): number {
+    return this.MaxRounds;
+  }
+  GetAllCharacters(): Character[] {
     return [...this.characters];
   }
 
-  getCharacterRandom(): Character | null{
+  GetCharacterRandom(): Character | null{
     if (this.characters.length === 0){
         return null;
     }
 
+    this.CurrentRound++;
     const RandomIndex = Math.floor(Math.random() * this.characters.length);
-    return this.characters[RandomIndex];
+    return this.characters.splice(RandomIndex, 1)[0];
   }
 
-  addCharacter(character: Character): void {
+  ResetRound(): void {
+    this.CurrentRound = 0;
+    this.characters = [...this.StaticCharacters];
+  }
+
+  AddCharacter(character: Character): void {
     this.characters.push(character);
   }
 }

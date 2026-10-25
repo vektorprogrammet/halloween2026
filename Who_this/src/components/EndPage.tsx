@@ -7,7 +7,7 @@ const EndPage = () => {
         <div className="flex w-[1000px] gap-4 flex-col py-3 px-4 flex px-4 py-2">
           <div className="flex aspect-video overflow-hidden w-full items-center  flex-col justify-center">
             <video className="w-full h-full" controls autoPlay loop>
-              <source src="public\Hamter.mp4" type="video/mp4"/>
+              <source src="Who_this\src\assets\Hamter.mp4" type="video/mp4"/>
               Something wrong happened with the video
             </video>
           </div>
