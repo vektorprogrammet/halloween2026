@@ -169,14 +169,16 @@ export default function GamePage() {
             <div className="border-t border-white/5 pt-[18px] mb-5">
               <p className="body-copy font-dm-regular">Round {CurrentRound} of {manager.GetMaxRound()}</p>
             </div>
-            
-            <button
-              className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#6F8E0F] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              type="button"
-              onClick={nextRound}
-            >
-              Next Round
-            </button>
+
+            {Revealed && (<button
+                className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#6F8E0F] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                type="button"
+                onClick={nextRound}
+              >
+                Next Round
+              </button>
+            )}
+ 
           </div>
         </aside>
       </div>
