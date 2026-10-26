@@ -21,13 +21,36 @@
     "id": 4,
     "name": "Pennywise",
     "movieName": "IT",
-    "imageSource": "/pennywise.jpg"
+    "imageSource": "/pennywise.webp"
   },
   {
     "id": 5,
-    "name": "Harley Quinn",
-    "movieName": "Suicide Squad / DC",
-    "imageSource": "/HarleyQuinn.jpg"
+    "name": "Creeper",
+    "movieName": "Minecraft Movie",
+    "imageSource": "/creeper.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Dracula",
+    "movieName": "Hotel Transylvania",
+    "imageSource": "/dracula.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Batman",
+    "movieName": "The Lego Movie",
+    "imageSource": "/batman.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Voldemort",
+    "movieName": "Harry Potter",
+    "imageSource": "/voldemort.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Donald Trump",
+    "movieName": "The Apprentice",
+    "imageSource": "/trump.webp"
   }
-
 ]
