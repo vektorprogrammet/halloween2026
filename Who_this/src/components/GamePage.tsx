@@ -64,7 +64,7 @@ export default function GamePage() {
   }, [manager]);
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
-      <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
+      <div className="mx-auto grid w-full max-w-[75vw] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
         <section className="overflow-hidden rounded-[20px] border border-[#3a2940] bg-[#17101f] shadow-[0_28px_80px_rgba(7,4,12,0.53)]">
           <header className="flex h-[41px] items-center justify-between px-[17px]">
             <p className="label text-[#837586] font-dm-regular">
@@ -73,7 +73,7 @@ export default function GamePage() {
             <p className="label text-[#b8d557] font-dm-regular">{`${percent}% REVEALED`}</p>
           </header>
 
-          <div className="relative aspect-[752.8/423.45] min-h-[210px] overflow-hidden bg-[#27122f]">
+          <div className="relative min-h-[75vh] overflow-hidden bg-[#27122f]">
             <ImageDisplay
               image={character?.GetImageSource()}
               gridRows={ROWS}
@@ -121,7 +121,7 @@ export default function GamePage() {
           </div>
         </section>
 
-        <aside className="flex min-h-[380px] flex-col justify-between rounded-[20px] border border-[#3a2940] bg-[#17101f] px-5 pb-5 pt-[25px] shadow-[0_28px_40px_rgba(7,4,12,0.53)] lg:min-h-[542.55px]">
+        <aside className="flex min-h-[80vh] flex-col justify-between rounded-[20px] border border-[#3a2940] bg-[#17101f] px-5 pb-5 pt-[25px] shadow-[0_28px_40px_rgba(7,4,12,0.53)] lg:min-h-[542.55px]">
           <div className="flex flex-col gap-6">
             <div className="border-b border-[#3a2940] py-[22px]">
               <h1 className="font-creepster text-[48px] leading-[27px] tracking-[1.08px]">
