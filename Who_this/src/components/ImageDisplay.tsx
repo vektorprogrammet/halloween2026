@@ -1,10 +1,10 @@
 import { ImageGrid } from "./ImageGrid"
 
 type ImageProps = {
-    image: string
+    image?: string
     gridCols: number
     gridRows: number
-    revealed: boolean[]
+    revealed:boolean[]
 }
 
 export const ImageDisplay = ({image, gridCols, gridRows, revealed}: ImageProps) => {
