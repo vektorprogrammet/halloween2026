@@ -1,38 +1,16 @@
-import { useNavigate } from "react-router-dom"
-import CharacterJSON from '../assets/Character.json'
-import { CharacterManager } from "../components/classes/CharacterManager";
 import { useMemo, useState } from "react";
 import { ImageDisplay } from "./ImageDisplay";
 import { useNavigate } from "react-router-dom";
 import { CharacterManager } from "./classes/CharacterManager";
 import { useEffect, useRef } from "react";
-import { useState } from "react";
 import CharacterJSON from '../assets/Character.json';
 import { Character } from "./classes/Character";
 
 
 export default function GamePage() {
-  
-  const nav = useNavigate();
-  
-  const manager = useMemo(()=> new CharacterManager(CharacterJSON), []);
-  manager.getAllCharacters().forEach((character) => {
-    console.log(character.GetName() + ", From Movie: " + character.GetMovieName())
-  })
-  
-  const ROWS = 4
-  const COLS = 5
-
-  const [character, setCharacter] = useState(() => manager.getCharacterRandom())
-  const [revealed, setRevealed] = useState<boolean[]>(() => Array(ROWS * COLS).fill(false))
-  const [answerShown, setAnswerShown] = useState(false)
-  const [round, setRound] = useState(1)
-
-  var percent = Math.round(revealed.filter(Boolean).length / revealed.length * 100)
-
-export default function GamePage() {
-  const nav = useNavigate();
   const ManagerRef = useRef<CharacterManager | null>(null);
+  const nav = useNavigate();
+  
 
   if (ManagerRef.current === null){
     ManagerRef.current = new CharacterManager(CharacterJSON);
@@ -40,11 +18,21 @@ export default function GamePage() {
 
   const manager = ManagerRef.current;
 
+  manager.GetAllCharacters().forEach((character) => {
+    console.log(character.GetName() + ", From Movie: " + character.GetMovieName())
+  })
+  
+  const ROWS = 4
+  const COLS = 5
+
   const [character, setCharacter] = useState<Character | null>(null); // Also current round get incremented, so after this current round is 1
-  const [CurrentRound, SetRound] = useState(manager.GetCurrentRound())
-  const [Revealed, SetRevealed] = useState(false);
+
+  const [revealed, setRevealed] = useState<boolean[]>(() => Array(ROWS * COLS).fill(false))
+  const [answerShown, setAnswerShown] = useState(false)
+  const [CurrentRound, SetRound] = useState(manager.GetCurrentRound());
 
 
+  var percent = Math.round(revealed.filter(Boolean).length / revealed.length * 100)
 
  function nextRound() {
   if (manager.GetCurrentRound() >= manager.GetMaxRound()){
@@ -58,11 +46,7 @@ export default function GamePage() {
     }
     setCharacter(nextCharacter);
     SetRound(manager.GetCurrentRound());
-    SetRevealed(false);
-  }
-
-  function reveal(){
-    SetRevealed(true);
+    setAnswerShown(false);
   }
 
   useEffect(() => {
@@ -156,7 +140,7 @@ export default function GamePage() {
             </div>
             <div className="border-t border-white/5 pt-[18px] mb-5">
               <p className="body-copy font-dm-regular">
-                {`Round ${round} of ${manager.getAllCharacters().length}`}
+                {`Round ${CurrentRound} of ${manager.GetMaxRound()}`}
               </p>
             </div>
             <button
