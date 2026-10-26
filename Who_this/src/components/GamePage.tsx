@@ -3,6 +3,12 @@ import CharacterJSON from '../assets/Character.json'
 import { CharacterManager } from "../components/classes/CharacterManager";
 import { useMemo, useState } from "react";
 import { ImageDisplay } from "./ImageDisplay";
+import { useNavigate } from "react-router-dom";
+import { CharacterManager } from "./classes/CharacterManager";
+import { useEffect, useRef } from "react";
+import { useState } from "react";
+import CharacterJSON from '../assets/Character.json';
+import { Character } from "./classes/Character";
 
 
 export default function GamePage() {
@@ -24,6 +30,51 @@ export default function GamePage() {
 
   var percent = Math.round(revealed.filter(Boolean).length / revealed.length * 100)
 
+export default function GamePage() {
+  const nav = useNavigate();
+  const ManagerRef = useRef<CharacterManager | null>(null);
+
+  if (ManagerRef.current === null){
+    ManagerRef.current = new CharacterManager(CharacterJSON);
+  }
+
+  const manager = ManagerRef.current;
+
+  const [character, setCharacter] = useState<Character | null>(null); // Also current round get incremented, so after this current round is 1
+  const [CurrentRound, SetRound] = useState(manager.GetCurrentRound())
+  const [Revealed, SetRevealed] = useState(false);
+
+
+
+ function nextRound() {
+  if (manager.GetCurrentRound() >= manager.GetMaxRound()){
+    return;
+  }
+    const nextCharacter = manager.GetCharacterRandom();
+
+    if (nextCharacter === null) {
+        console.log("No characters available!");
+        return;
+    }
+    setCharacter(nextCharacter);
+    SetRound(manager.GetCurrentRound());
+    SetRevealed(false);
+  }
+
+  function reveal(){
+    SetRevealed(true);
+  }
+
+  useEffect(() => {
+    // StrictMode workaround (This gets run twice in strictMode):
+    if (manager.GetCurrentRound() !== 0) {
+        return;
+    }
+    const firstCharacter = manager.GetCharacterRandom();
+
+    setCharacter(firstCharacter);
+    SetRound(manager.GetCurrentRound());
+  }, [manager])
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
       <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
@@ -81,7 +132,7 @@ export default function GamePage() {
                 {answerShown ? character?.GetName() : "_________"}
               </p>
               <p className="body-copy font-dm-regular">
-                {answerShown ? character?.GetMovieName() : "From ____"}
+                From {answerShown ? character?.GetMovieName() : "From ____"}
               </p>
             </div>
           </div>
