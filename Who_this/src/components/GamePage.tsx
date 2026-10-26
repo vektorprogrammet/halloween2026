@@ -42,7 +42,7 @@ export default function GamePage() {
       return;
     }
     const nextCharacter = manager.GetCharacterRandom();
-
+    setRevealed(revealed.map(() => false));
     if (nextCharacter === null) {
       console.log("No characters available!");
       return;
@@ -133,7 +133,7 @@ export default function GamePage() {
                 {answerShown ? character?.GetName() : "_________"}
               </p>
               <p className="body-copy font-dm-regular">
-                From {answerShown ? character?.GetMovieName() : "From ____"}
+                From {answerShown ? character?.GetMovieName() : "____"}
               </p>
             </div>
           </div>
