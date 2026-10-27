@@ -50,19 +50,19 @@ export default function GamePage() {
     }
     const nextCharacter = manager.GetCharacterRandom();
     setRevealed(revealed.map(() => false));
+    playSound(StartGameSfx);
     if (nextCharacter === null) {
       console.log("No characters available!");
       return;
     }
     setCharacter(nextCharacter);
     SetRound(manager.GetCurrentRound());
-    SetRevealed(false);
+    setAnswerShown(false);  
   }
 
   useEffect(() => {
     // StrictMode workaround (This gets run twice in strictMode):
     if (manager.GetCurrentRound() !== 0) {
-      return;
       return;
     }
     const firstCharacter = manager.GetCharacterRandom();
@@ -71,14 +71,6 @@ export default function GamePage() {
     SetRound(manager.GetCurrentRound());
   }, [manager]);
 
-  const PlayRevealTileSfx = () => {
-    if (Revealed) return;
-    playSound(RevealATileSfx);
-  };
-  const PlayRevealPictureSfx = () => {
-    if (Revealed) return;
-    playSound(RevealPictureSfx);
-  };
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
       <div className="mx-auto grid w-full max-w-[75vw] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
@@ -110,6 +102,7 @@ export default function GamePage() {
                   .filter((index) => index !== -1);
 
                 if (hiddenIndexes.length === 0) return;
+                playSound(RevealATileSfx);
 
                 const pick =
                   hiddenIndexes[
@@ -129,7 +122,7 @@ export default function GamePage() {
               className="label min-h-[46px] rounded-[9px] border border-[#49364e] bg-[#211628] px-5 text-[#d9ccda] transition hover:border-[#705678] hover:bg-[#2a1d32] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2"
               type="button"
               onClick={() => {
-                PlayRevealPictureSfx();
+                if (!revealed.every(Boolean)) playSound(RevealPictureSfx);
                 setAnswerShown(true);
                 setRevealed(revealed.map(() => true));
               }}
@@ -171,20 +164,6 @@ export default function GamePage() {
               >
                 New game
               </button>
-              <button
-                className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#FFFFFF] px-5 text-[#180d17] transition hover:bg-[#aaaaaa] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="button"
-                onClick={() => nav("/End")}
-              >
-                Finish Game
-              </button>
-              <button
-                className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#000000] px-5 text-[#FFFFFF] transition hover:bg-[#101010] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="button"
-                onClick={() => nav("/Start")}
-              >
-                New game
-              </button>
             </div>
             <div className="border-t border-white/5 pt-[18px] mb-5">
               <p className="body-copy font-dm-regular">
@@ -197,6 +176,7 @@ export default function GamePage() {
                 type="button"
                 onClick={() => {
                   nextRound();
+                  playSound(StartGameSfx);
                 }}
               >
                 Next Round
