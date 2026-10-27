@@ -1,7 +1,8 @@
+import { useMemo, useState } from "react";
+import { ImageDisplay } from "./ImageDisplay";
 import { useNavigate } from "react-router-dom";
 import { CharacterManager } from "./classes/CharacterManager";
 import { useEffect, useRef } from "react";
-import { useState } from "react";
 import CharacterJSON from "../assets/Character.json";
 import { Character } from "./classes/Character";
 import StartGameSfx from "../assets/StartGameSfx.mp3";
@@ -10,67 +11,45 @@ import RevealPictureSfx from "../assets/RevealPictureSfx.mp3";
 import { playSound } from "react-sounds";
 const assetPathPrefix = "/assets";
 
-const characterLayers = [
-  { file: "9713e.svg", className: "inset-[0_24.04%]" },
-  { file: "0043b.svg", className: "inset-[5.38%_27.07%_13.08%_27.07%]" },
-  { file: "fce3d.svg", className: "inset-[67.68%_24.04%_0_24.04%]" },
-  { file: "77950.svg", className: "inset-[61.69%_30.62%_0_30.96%]" },
-  { file: "b0f6f.svg", className: "inset-[64.92%_40.22%_12%_40.48%]" },
-  { file: "6e154.svg", className: "inset-[15.69%_43.16%_34.15%_43.86%]" },
-  { file: "8152e.svg", className: "inset-[14.62%_42.82%_63.08%_43.47%]" },
-  { file: "5661e.svg", className: "inset-[42.31%_44.98%_55.38%_45.67%]" },
-  {
-    file: "9505c.svg",
-    className: "inset-[54.92%_46.88%_43.81%_47.66%]",
-    imageClassName: "absolute inset-[-36.37%_-4.76%_-36.36%_-4.76%]",
-  },
-  { file: "1e67d.svg", className: "inset-[55.54%_47.49%_41.08%_48.27%]" },
-  { file: "6cbc9.svg", className: "inset-[30.62%_40.57%_61.08%_41.26%]" },
-  { file: "e455b.svg", className: "inset-[78.77%_46.97%_0.46%_46.97%]" },
-  { file: "bebb6.svg", className: "inset-[11.97%_30.87%_77.08%_30.44%]" },
-];
 
-const tileColors = ["#713246", "#77354a", "#6d3045", "#743148", "#683044"];
-const tileCount = 20;
-
-function CharacterArtwork() {
-  return (
-    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-      {characterLayers.map((layer) => (
-        <div className={`absolute ${layer.className}`} key={layer.file}>
-          <img
-            alt=""
-            className={`block h-full w-full max-w-none ${layer.imageClassName ?? ""}`}
-            src={`${assetPathPrefix}/${layer.file}`}
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function GamePage() {
-  const nav = useNavigate();
   const ManagerRef = useRef<CharacterManager | null>(null);
+  const nav = useNavigate();
 
-  if (ManagerRef.current === null) {
+  if (ManagerRef.current === null)  {
     ManagerRef.current = new CharacterManager(CharacterJSON);
   }
 
   const manager = ManagerRef.current;
 
-  const [character, setCharacter] = useState<Character | null>(null); // Also current round get incremented, so after this current round is 1
-  const [CurrentRound, SetRound] = useState(manager.GetCurrentRound());
-  const [Revealed, SetRevealed] = useState(false);
+  manager.GetAllCharacters().forEach((character) => {
+    console.log(
+      character.GetName() + ", From Movie: " + character.GetMovieName(),
+    );
+  });
 
-  function nextRound() {    
-    console.log(manager.GetAllCharacters());
+  const ROWS = 4;
+  const COLS = 5;
+
+  const [character, setCharacter] = useState<Character | null>(null); // Also current round get incremented, so after this current round is 1
+
+  const [revealed, setRevealed] = useState<boolean[]>(() =>
+    Array(ROWS * COLS).fill(false),
+  );
+  const [answerShown, setAnswerShown] = useState(false);
+  const [CurrentRound, SetRound] = useState(manager.GetCurrentRound());
+
+  var percent = Math.round(
+    (revealed.filter(Boolean).length / revealed.length) * 100,
+  );
+
+  function nextRound() {
     if (manager.GetCurrentRound() >= manager.GetMaxRound()) {
       return;
     }
-    playSound(StartGameSfx);
     const nextCharacter = manager.GetCharacterRandom();
-
+    setRevealed(revealed.map(() => false));
     if (nextCharacter === null) {
       console.log("No characters available!");
       return;
@@ -80,16 +59,10 @@ export default function GamePage() {
     SetRevealed(false);
   }
 
-  function reveal() {
-    if (Revealed) {
-      return;
-    }
-    SetRevealed(true);
-  }
-
   useEffect(() => {
     // StrictMode workaround (This gets run twice in strictMode):
     if (manager.GetCurrentRound() !== 0) {
+      return;
       return;
     }
     const firstCharacter = manager.GetCharacterRandom();
@@ -108,35 +81,47 @@ export default function GamePage() {
   };
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
-      <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
+      <div className="mx-auto grid w-full max-w-[75vw] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
         <section className="overflow-hidden rounded-[20px] border border-[#3a2940] bg-[#17101f] shadow-[0_28px_80px_rgba(7,4,12,0.53)]">
           <header className="flex h-[41px] items-center justify-between px-[17px]">
             <p className="label text-[#837586] font-dm-regular">
               MYSTERY CHARACTER
             </p>
-            <p className="label text-[#b8d557] font-dm-regular">0% REVEALED</p>
+            <p className="label text-[#b8d557] font-dm-regular">{`${percent}% REVEALED`}</p>
           </header>
 
-          <div className="relative aspect-[752.8/423.45] min-h-[210px] overflow-hidden bg-[#27122f]">
-            <CharacterArtwork />
-            <div className="absolute inset-0 grid grid-cols-5 grid-rows-4 gap-[3px] bg-[#100a18]">
-              {Array.from({ length: tileCount }, (_, index) => (
-                <div
-                  className="tile relative"
-                  key={index}
-                  style={{
-                    backgroundColor: tileColors[index % tileColors.length],
-                  }}
-                />
-              ))}
-            </div>
+          <div className="relative min-h-[75vh] overflow-hidden bg-[#27122f]">
+            <ImageDisplay
+              image={character?.GetImageSource()}
+              gridRows={ROWS}
+              gridCols={COLS}
+              revealed={revealed}
+            />
           </div>
 
           <div className="flex min-h-[78px] flex-wrap items-center justify-center gap-3 px-[18px] py-3">
             <button
               className="label flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#ff7841] px-5 text-[#180d17] transition hover:bg-[#ff8a5b] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               type="button"
-              onClick={PlayRevealTileSfx}
+              disabled={percent === 100}
+              onClick={() => {
+                const hiddenIndexes = revealed
+                  .map((isRevealed, index) => (isRevealed ? -1 : index))
+                  .filter((index) => index !== -1);
+
+                if (hiddenIndexes.length === 0) return;
+
+                const pick =
+                  hiddenIndexes[
+                    Math.floor(Math.random() * hiddenIndexes.length)
+                  ];
+
+                setRevealed(
+                  revealed.map((isRevealed, index) =>
+                    index === pick ? true : isRevealed,
+                  ),
+                );
+              }}
             >
               REVEAL ONE PIECE
             </button>
@@ -144,8 +129,9 @@ export default function GamePage() {
               className="label min-h-[46px] rounded-[9px] border border-[#49364e] bg-[#211628] px-5 text-[#d9ccda] transition hover:border-[#705678] hover:bg-[#2a1d32] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2"
               type="button"
               onClick={() => {
-                reveal();
                 PlayRevealPictureSfx();
+                setAnswerShown(true);
+                setRevealed(revealed.map(() => true));
               }}
             >
               REVEAL ANSWER
@@ -153,7 +139,7 @@ export default function GamePage() {
           </div>
         </section>
 
-        <aside className="flex min-h-[380px] flex-col justify-between rounded-[20px] border border-[#3a2940] bg-[#17101f] px-5 pb-5 pt-[25px] shadow-[0_28px_40px_rgba(7,4,12,0.53)] lg:min-h-[542.55px]">
+        <aside className="flex min-h-[80vh] flex-col justify-between rounded-[20px] border border-[#3a2940] bg-[#17101f] px-5 pb-5 pt-[25px] shadow-[0_28px_40px_rgba(7,4,12,0.53)] lg:min-h-[542.55px]">
           <div className="flex flex-col gap-6">
             <div className="border-b border-[#3a2940] py-[22px]">
               <h1 className="font-creepster text-[48px] leading-[27px] tracking-[1.08px]">
@@ -161,11 +147,11 @@ export default function GamePage() {
               </h1>
             </div>
             <div className="flex flex-col gap-8 pt-[14px]">
-              <p className="font-creepster text-[32px] leading-[27px] tracking-[1.08px]">
-                {Revealed ? character?.GetName() : "_____________"}
+              <p className="font-creepster text-[48px] leading-[27px] tracking-[1.08px]">
+                {answerShown ? character?.GetName() : "_________"}
               </p>
-              <p className="body-copy text-[20px] font-dm-regular">
-                From {Revealed ? character?.GetMovieName() : "______"}
+              <p className="body-copy font-dm-regular">
+                From {answerShown ? character?.GetMovieName() : "____"}
               </p>
             </div>
           </div>
@@ -185,14 +171,27 @@ export default function GamePage() {
               >
                 New game
               </button>
+              <button
+                className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#FFFFFF] px-5 text-[#180d17] transition hover:bg-[#aaaaaa] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                type="button"
+                onClick={() => nav("/End")}
+              >
+                Finish Game
+              </button>
+              <button
+                className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#000000] px-5 text-[#FFFFFF] transition hover:bg-[#101010] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                type="button"
+                onClick={() => nav("/Start")}
+              >
+                New game
+              </button>
             </div>
             <div className="border-t border-white/5 pt-[18px] mb-5">
               <p className="body-copy font-dm-regular">
-                Round {CurrentRound} of {manager.GetMaxRound()}
+                {`Round ${CurrentRound} of ${manager.GetMaxRound()}`}
               </p>
             </div>
-
-            {Revealed && (
+            {answerShown && (
               <button
                 className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#6F8E0F] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 type="button"
