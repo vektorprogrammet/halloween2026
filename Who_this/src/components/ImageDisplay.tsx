@@ -10,7 +10,7 @@ type ImageProps = {
 export const ImageDisplay = ({image, gridCols, gridRows, revealed}: ImageProps) => {
     return (
         <div className="absolute inset-0">
-            <img src={image} className="absolute inset-0 h-full w-full object-cover" alt="" />
+            <img src={image} className="absolute inset-0 h-full w-full object-top" alt="" />
             <ImageGrid gridCols={gridCols} gridRows={gridRows} revealed={revealed}/>
         </div>
     )

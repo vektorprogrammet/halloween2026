@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "howler": "^2.2.4",
+    "react-sounds": "^1.0.30"
+  }
+}

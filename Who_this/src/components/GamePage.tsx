@@ -5,12 +5,19 @@ import { CharacterManager } from "./classes/CharacterManager";
 import { useEffect, useRef } from "react";
 import CharacterJSON from "../assets/Character.json";
 import { Character } from "./classes/Character";
+import StartGameSfx from "../assets/StartGameSfx.mp3";
+import RevealATileSfx from "../assets/RevealATileSfx.mp3";
+import RevealPictureSfx from "../assets/RevealPictureSfx.mp3";
+import { playSound } from "react-sounds";
+const assetPathPrefix = "/assets";
+
+
 
 export default function GamePage() {
   const ManagerRef = useRef<CharacterManager | null>(null);
   const nav = useNavigate();
 
-  if (ManagerRef.current === null) {
+  if (ManagerRef.current === null)  {
     ManagerRef.current = new CharacterManager(CharacterJSON);
   }
 
@@ -43,13 +50,14 @@ export default function GamePage() {
     }
     const nextCharacter = manager.GetCharacterRandom();
     setRevealed(revealed.map(() => false));
+    playSound(StartGameSfx);
     if (nextCharacter === null) {
       console.log("No characters available!");
       return;
     }
     setCharacter(nextCharacter);
     SetRound(manager.GetCurrentRound());
-    setAnswerShown(false);
+    setAnswerShown(false);  
   }
 
   useEffect(() => {
@@ -62,9 +70,10 @@ export default function GamePage() {
     setCharacter(firstCharacter);
     SetRound(manager.GetCurrentRound());
   }, [manager]);
+
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#411710] to-[#E34F37] min-h-dvh px-4 py-8 text-[#f8f0df] sm:px-7 lg:flex lg:items-center lg:px-10 lg:py-12">
-      <div className="mx-auto grid w-full max-w-[1168px] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
+      <div className="mx-auto grid w-full max-w-[75vw] items-stretch gap-7 lg:grid-cols-[minmax(0,754.4px)_minmax(280px,330px)] lg:gap-[72px]">
         <section className="overflow-hidden rounded-[20px] border border-[#3a2940] bg-[#17101f] shadow-[0_28px_80px_rgba(7,4,12,0.53)]">
           <header className="flex h-[41px] items-center justify-between px-[17px]">
             <p className="label text-[#837586] font-dm-regular">
@@ -73,7 +82,7 @@ export default function GamePage() {
             <p className="label text-[#b8d557] font-dm-regular">{`${percent}% REVEALED`}</p>
           </header>
 
-          <div className="relative aspect-[752.8/423.45] min-h-[210px] overflow-hidden bg-[#27122f]">
+          <div className="relative min-h-[75vh] overflow-hidden bg-[#27122f]">
             <ImageDisplay
               image={character?.GetImageSource()}
               gridRows={ROWS}
@@ -93,6 +102,7 @@ export default function GamePage() {
                   .filter((index) => index !== -1);
 
                 if (hiddenIndexes.length === 0) return;
+                playSound(RevealATileSfx);
 
                 const pick =
                   hiddenIndexes[
@@ -112,6 +122,7 @@ export default function GamePage() {
               className="label min-h-[46px] rounded-[9px] border border-[#49364e] bg-[#211628] px-5 text-[#d9ccda] transition hover:border-[#705678] hover:bg-[#2a1d32] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2"
               type="button"
               onClick={() => {
+                if (!revealed.every(Boolean)) playSound(RevealPictureSfx);
                 setAnswerShown(true);
                 setRevealed(revealed.map(() => true));
               }}
@@ -121,7 +132,7 @@ export default function GamePage() {
           </div>
         </section>
 
-        <aside className="flex min-h-[380px] flex-col justify-between rounded-[20px] border border-[#3a2940] bg-[#17101f] px-5 pb-5 pt-[25px] shadow-[0_28px_40px_rgba(7,4,12,0.53)] lg:min-h-[542.55px]">
+        <aside className="flex min-h-[80vh] flex-col justify-between rounded-[20px] border border-[#3a2940] bg-[#17101f] px-5 pb-5 pt-[25px] shadow-[0_28px_40px_rgba(7,4,12,0.53)] lg:min-h-[542.55px]">
           <div className="flex flex-col gap-6">
             <div className="border-b border-[#3a2940] py-[22px]">
               <h1 className="font-creepster text-[48px] leading-[27px] tracking-[1.08px]">
@@ -163,7 +174,10 @@ export default function GamePage() {
               <button
                 className="label font-bold flex min-h-[46px] items-center justify-center gap-[9px] rounded-[9px] bg-[#9FBE3F] px-5 text-[#180d17] transition hover:bg-[#6F8E0F] focus-visible:outline-2 focus-visible:outline-[#f8f0df] focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 type="button"
-                onClick={nextRound}
+                onClick={() => {
+                  nextRound();
+                  playSound(StartGameSfx);
+                }}
               >
                 Next Round
               </button>
