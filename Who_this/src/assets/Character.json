@@ -52,5 +52,17 @@
     "name": "Donald Trump",
     "movieName": "The Apprentice",
     "imageSource": "/trump.webp"
+  },
+    {
+    "id": 10,
+    "name": "Paddington",
+    "movieName": "Paddington",
+    "imageSource": "/paddington.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Gollum",
+    "movieName": "Lord of the Rings",
+    "imageSource": "/gollum.png"
   }
 ]

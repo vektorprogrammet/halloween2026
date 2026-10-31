@@ -6,7 +6,7 @@ export class CharacterManager {
   private characters: Character[] = [];
   private readonly StaticCharacters: Character[] = [];
   private CurrentRound: number;
-  private MaxRounds: number = 5;
+  private MaxRounds: number = 9;
 
 
   constructor(data: CharacterData[]) {
