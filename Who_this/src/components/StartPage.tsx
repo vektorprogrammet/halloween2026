@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import StartGameSfx from "../assets/StartGameSfx.mp3";
+import { playSound } from "react-sounds";
+
 
 
 
@@ -35,11 +38,7 @@ export default function StartPage({onStart, onReveal}: HalloweenGameProps) {
     return () => clearInterval(interval);
   }, [onReveal]);
 
-  const startGame = () => {
-    setActiveTile(null);
-    onStart?.();
-  };
-
+  const PlayStartGameSfx = () => playSound(StartGameSfx);
   return (
     <main className="bg-linear-300/oklab from-[#000000] via-[#331C23] to-[#512C38] min-h-dvh bg-black p-[clamp(16px,2.2vw,34px)] text-[#f8f0df]">
       <div className="mx-auto flex min-h-[calc(100dvh-clamp(32px,4.4vw,68px))] max-w-[1440px] items-center rounded-[9px] px-[clamp(24px,2.5vw,66px)] py-[clamp(40px,6vw,86px)]">
@@ -71,7 +70,7 @@ export default function StartPage({onStart, onReveal}: HalloweenGameProps) {
               </p>
               <button
               className="font-dm-black w-full cursor-pointer rounded-[9px] bg-[#ff7841] px-8 py-[23px] text-center text-[24px] leading-[15px] tracking-[1.3px] text-[#180d17] transition hover:bg-[#ff8959] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f8f0df] active:translate-y-px"
-              onClick={() => nav("/Game")}
+              onClick={() => {PlayStartGameSfx(); nav("/Game");}}
               style={{ fontVariationSettings: '"opsz" 14' }}
               type="button"
             >
